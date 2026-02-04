@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Nutzer</h1>
+  <h1 class="page-title">Users</h1>
 
-  <ul>
+  <div class="grid users-grid">
     {% for user in users %}
-      <li>
-        <a href="{{ url_for('user_movies', user_id=user.id) }}">{{ user.name }}</a>
-      </li>
+      <div class="card user-card">
+        <div class="user-name">{{ user.name }}</div>
+        <a class="btn btn-primary" href="{{ url_for('user_movies', user_id=user.id) }}">View Movies</a>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 
-  <form action="{{ url_for('create_user') }}" method="post">
-    <label for="name">Neuen Nutzer hinzufügen:</label>
-    <input id="name" name="name" type="text" required>
-    <button type="submit">Hinzufügen</button>
-  </form>
+  <div class="card add-card">
+    <h2 class="section-title">Add New User</h2>
+    <form class="form-row" action="{{ url_for('create_user') }}" method="post">
+      <input class="input" name="name" type="text" placeholder="User name" required>
+      <button class="btn btn-primary" type="submit">Add User</button>
+    </form>
+  </div>
 {% endblock %}

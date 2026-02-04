@@ -1,27 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Movies for {{ user.name }}</h1>
+  <a class="back-link" href="{{ url_for('index') }}">← Back to Users</a>
 
-  <form action="{{ url_for('add_movie', user_id=user.id) }}" method="post">
-    <label for="title">Add movie:</label>
-    <input id="title" name="title" type="text" required>
-    <button type="submit">Add</button>
-  </form>
+  <h1 class="page-title">Movies for {{ user.name }}</h1>
 
-  <ul>
+  <div class="card add-card">
+    <h2 class="section-title">Add New Movie</h2>
+    <form class="form-row" action="{{ url_for('add_movie', user_id=user.id) }}" method="post">
+      <input class="input" name="title" type="text" placeholder="Movie title (e.g. Titanic)" required>
+      <button class="btn btn-primary" type="submit">Add Movie</button>
+    </form>
+  </div>
+
+  <div class="grid movies-grid">
     {% for movie in movies %}
-      <li>
-        {{ movie.name }}{% if movie.year %} ({{ movie.year }}){% endif %}
-        <form action="{{ url_for('update_movie', user_id=user.id, movie_id=movie.id) }}" method="post" style="display:inline;">
-          <input name="new_title" type="text" placeholder="New title" required>
-          <button type="submit">Update</button>
+      <div class="card movie-card">
+        {% if movie.poster_url %}
+          <img class="poster" src="{{ movie.poster_url }}" alt="Poster for {{ movie.name }}">
+        {% else %}
+          <div class="poster placeholder">No poster</div>
+        {% endif %}
+
+        <form class="update-form" action="{{ url_for('update_movie', user_id=user.id, movie_id=movie.id) }}" method="post">
+          <input class="input input-compact" name="new_title" type="text" value="{{ movie.name }}" required>
+          <button class="btn btn-primary btn-compact" type="submit">Update</button>
         </form>
 
-        <form action="{{ url_for('delete_movie', user_id=user.id, movie_id=movie.id) }}" method="post" style="display:inline;">
-          <button type="submit">Delete</button>
+        <div class="meta"><span class="meta-label">Year:</span> {{ movie.year or "-" }}</div>
+        <div class="meta"><span class="meta-label">Director:</span> {{ movie.director or "-" }}</div>
+
+        <form action="{{ url_for('delete_movie', user_id=user.id, movie_id=movie.id) }}" method="post">
+          <button class="btn btn-danger" type="submit">Delete</button>
         </form>
-      </li>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
 {% endblock %}

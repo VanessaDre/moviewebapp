@@ -25,6 +25,7 @@ def fetch_movie_from_omdb(title: str) -> dict | None:
 
     url = "https://www.omdbapi.com/"
     params = {"t": title, "apikey": api_key}
+
     response = requests.get(url, params=params, timeout=10)
     response.raise_for_status()
     data = response.json()
@@ -44,8 +45,14 @@ def index():
 @app.route("/users", methods=["POST"])
 def create_user():
     name = request.form.get("name", "").strip()
-    if name:
+    if not name:
+        return redirect(url_for("index"))
+
+    try:
         data_manager.create_user(name)
+    except Exception:
+        db.session.rollback()
+
     return redirect(url_for("index"))
 
 
@@ -93,22 +100,41 @@ def add_movie(user_id: int):
         user_id=user_id,
     )
 
-    data_manager.add_movie(movie)
+    try:
+        data_manager.add_movie(movie)
+    except Exception:
+        db.session.rollback()
+
     return redirect(url_for("user_movies", user_id=user_id))
 
 
 @app.route("/users/<int:user_id>/movies/<int:movie_id>/update", methods=["POST"])
 def update_movie(user_id: int, movie_id: int):
     new_title = request.form.get("new_title", "").strip()
-    if new_title:
+    if not new_title:
+        return redirect(url_for("user_movies", user_id=user_id))
+
+    try:
         data_manager.update_movie(movie_id, new_title)
+    except Exception:
+        db.session.rollback()
+
     return redirect(url_for("user_movies", user_id=user_id))
 
 
 @app.route("/users/<int:user_id>/movies/<int:movie_id>/delete", methods=["POST"])
 def delete_movie(user_id: int, movie_id: int):
-    data_manager.delete_movie(movie_id)
+    try:
+        data_manager.delete_movie(movie_id)
+    except Exception:
+        db.session.rollback()
+
     return redirect(url_for("user_movies", user_id=user_id))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
 
 
 if __name__ == "__main__":
