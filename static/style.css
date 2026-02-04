@@ -1,0 +1,31 @@
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f6f7fb; }
+.topbar { background: #2a66f0; color: white; padding: 18px 24px; }
+.brand { font-size: 22px; font-weight: 700; }
+
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+
+.card { background: white; border-radius: 14px; padding: 16px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+.form { display: flex; gap: 12px; align-items: end; margin-bottom: 18px; }
+label { display: grid; gap: 6px; width: 100%; }
+input { padding: 10px 12px; border: 1px solid #d9dce7; border-radius: 10px; outline: none; }
+
+button { padding: 10px 14px; border: 0; border-radius: 10px; background: #2a66f0; color: white; font-weight: 600; cursor: pointer; }
+button.danger { background: #e34b4b; }
+
+.user-card { text-decoration: none; color: inherit; display: block; }
+.user-name { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+
+.movies { margin-top: 10px; }
+.movie-card { display: grid; gap: 10px; }
+.poster { width: 100%; max-height: 320px; object-fit: cover; border-radius: 12px; background: #eee; }
+.movie-title { font-size: 18px; font-weight: 800; }
+.meta { color: #222; }
+.muted { color: #6b7280; }
+
+.inline { display: flex; gap: 10px; }
+.back { display: inline-block; margin-bottom: 10px; text-decoration: none; color: #2a66f0; }
+
+.flash { margin-bottom: 16px; }
+.flash-item { background: #fff3cd; border: 1px solid #ffe69c; padding: 10px 12px; border-radius: 10px; margin-bottom: 8px; }
